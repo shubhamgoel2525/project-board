@@ -1,11 +1,21 @@
 import React from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import Navbar from './components/Navbar';
+import ProjectBoard from './components/ProjectBoard';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import AddProjectTask from './components/ProjectTask/AddProjectTask';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Welcome to Project Board!</h1>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Route exact path="/" component={ProjectBoard} />
+        <Route exact path="/addProjectTask" component={AddProjectTask} />
+      </div>
+    </Router>
   );
 }
 
