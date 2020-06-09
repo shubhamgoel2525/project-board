@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ProjectTaskItem from './ProjectTask/ProjectTaskItem';
 
 class ProjectBoard extends Component {
     render() {
@@ -13,49 +14,26 @@ class ProjectBoard extends Component {
                 {
                     //<!-- Backlog STARTS HERE -->
                 }
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <div className="card text-center mb-2">
-                                    <div className="card-header bg-secondary text-white">
-                                        <h3>TO DO</h3>
-                                    </div>
-                                </div>
-
-                                {
-                                    //<!-- SAMPLE PROJECT TASK STARTS HERE -->
-                                }
-                                <div className="card mb-1 bg-light">
-                                    <div className="card-header text-primary">
-                                        ID: projectSequence
-                                    </div>
-                                    <div className="card-body bg-light">
-                                        <h5 className="card-title">summary</h5>
-                                        <p className="card-text text-truncate ">
-                                            acceptanceCriteria
-                                        </p>
-                                        <a href="#" className="btn btn-primary">
-                                            View / Update
-                                        </a>
-
-                                        <button className="btn btn-danger ml-4">
-                                            Delete
-                                        </button>
-                                    </div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-4">
+                            <div className="card text-center mb-2">
+                                <div className="card-header bg-secondary text-white">
+                                    <h3>TO DO</h3>
                                 </div>
                             </div>
-                            <div className="col-md-4">
-                                <div className="card text-center mb-2">
-                                    <div className="card-header bg-primary text-white">
-                                        <h3>In Progress</h3>
-                                    </div>
+                            <ProjectTaskItem />
+                        </div>
+                        <div className="col-md-4">
+                            <div className="card text-center mb-2">
+                                <div className="card-header bg-primary text-white">
+                                    <h3>In Progress</h3>
                                 </div>
-                                {
-                                    //<!-- SAMPLE PROJECT TASK STARTS HERE -->
-                                }
-                                {
-                                    //<!-- SAMPLE PROJECT TASK ENDS HERE -->
-                                }
+                            </div>
+                            {
+                                //<!-- SAMPLE PROJECT TASK STARTS HERE -->
+                                //<!-- SAMPLE PROJECT TASK ENDS HERE -->
+                            }
                         </div>
                         <div className="col-md-4">
                             <div className="card text-center mb-2">
