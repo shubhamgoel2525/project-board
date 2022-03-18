@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addProjectTask } from "../../actions/projectTaskActions";
 import classnames from "classnames";
+
+import { addProjectTask } from "../../actions/projectTaskActions";
+import withRouter from '../../hoc/withRouter';
 
 class AddProjectTask extends Component {
   constructor() {

@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/fontawesome.css";
 import "@fortawesome/fontawesome-free/css/brands.css";
 import "@fortawesome/fontawesome-free/css/solid.css";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from 'react-redux';
 
 import "./App.css";
@@ -21,17 +21,11 @@ class App extends React.Component {
           <div className="App">
             <Navbar />
 
-            <Switch>
-              <Route exact path="/">
-                <ProjectBoard />
-              </Route>
-              <Route exact path="/add-project-task">
-                <AddProjectTask />
-              </Route>
-              <Route exact path="/update-project-task/:project_task_id">
-                <UpdateProjectTask />
-              </Route>
-            </Switch>
+            <Routes>
+              <Route path="/" element={<ProjectBoard />} />
+              <Route path="/add-project-task" element={<AddProjectTask />} />
+              <Route path="/update-project-task/:project_task_id" element={<UpdateProjectTask />} />
+            </Routes>
           </div>
         </BrowserRouter>
       </Provider>

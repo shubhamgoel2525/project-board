@@ -10,7 +10,7 @@ export const addProjectTask = (projectTask, history) => async (dispatch) => {
   try {
     await axios.post("http://localhost:8080/api/v1/board", projectTask);
 
-    history.push("/");
+    history("/");
 
     dispatch({ type: GET_ERRORS, payload: {} });
   } catch (error) {
@@ -40,6 +40,6 @@ export const getProjectTask = (projectTaskId, history) => async (dispatch) => {
 
     dispatch({ type: GET_PROJECT_TASK, payload: res.data });
   } catch (error) {
-    history.push("/");
+    history("/");
   }
 };

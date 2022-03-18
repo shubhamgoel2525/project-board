@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
@@ -8,6 +8,7 @@ import {
   getProjectTask,
   addProjectTask,
 } from "../../actions/projectTaskActions";
+import withRouter from "../../hoc/withRouter";
 
 class UpdateProjectTask extends Component {
   constructor() {
@@ -26,7 +27,7 @@ class UpdateProjectTask extends Component {
   }
 
   componentDidMount() {
-    const { project_task_id } = this.props.match.params;
+    const { project_task_id } = this.props.params;
 
     this.props.getProjectTask(project_task_id);
   }
