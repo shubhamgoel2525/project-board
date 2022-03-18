@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addProjectTask } from "../../actions/projectTaskActions";
@@ -119,4 +119,4 @@ const mapStateToProps = (state) => {
   return { errors: state.errors };
 };
 
-export default connect(mapStateToProps, { addProjectTask })(AddProjectTask);
+export default connect(mapStateToProps, { addProjectTask })(withRouter(AddProjectTask));
