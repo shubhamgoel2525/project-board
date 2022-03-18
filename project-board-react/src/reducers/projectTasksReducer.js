@@ -6,7 +6,7 @@ import {
 
 const initialState = { projectTasks: [], projectTask: {} };
 
-export default function (state = initialState, action) {
+function projectTaskReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PROJECT_TASKS:
       return { ...state, projectTasks: action.payload };
@@ -26,3 +26,5 @@ export default function (state = initialState, action) {
       return state;
   }
 }
+
+export default projectTaskReducer;
