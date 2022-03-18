@@ -31,14 +31,16 @@ class UpdateProjectTask extends Component {
     this.props.getProjectTask(project_task_id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.errors !== prevProps.errors) {
+      this.setState({ errors: this.props.errors });
     }
 
-    const { id, summary, acceptanceCriteria, status } = nextProps.projectTask;
+    const { id, summary, acceptanceCriteria, status } = this.props.projectTask;
 
-    this.setState({ id, summary, acceptanceCriteria, status });
+    if (this.props !== prevProps) {
+      this.setState({ id, summary, acceptanceCriteria, status });
+    }
   }
 
   onChange(e) {
