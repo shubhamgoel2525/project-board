@@ -1,17 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 
 import ProjectTaskItem from "./ProjectTask/ProjectTaskItem";
 import { getBacklog } from "../actions/projectTaskActions";
 
-const ProjectBoard = ({ projectTask, getBacklog }) => {
-  React.useEffect(() => {
-    getBacklog();
-  }, [getBacklog]);
+const ProjectBoard = () => {
+  const dispatch = useDispatch();
+  const { projectTasks } = useSelector((state) => state.projectTask);
 
-  const { projectTasks } = projectTask;
+  React.useEffect(() => {
+    dispatch(getBacklog());
+  }, [dispatch]);
+
   let todoItems = [];
   let inProgressItems = [];
   let doneItems = [];
@@ -97,13 +98,4 @@ const ProjectBoard = ({ projectTask, getBacklog }) => {
   );
 };
 
-ProjectBoard.propTypes = {
-  getBacklog: PropTypes.func.isRequired,
-  projectTask: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return { projectTask: state.projectTask };
-};
-
-export default connect(mapStateToProps, { getBacklog })(ProjectBoard);
+export default ProjectBoard;

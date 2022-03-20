@@ -1,7 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import classnames from "classnames";
 
 import {
@@ -9,14 +8,12 @@ import {
   addProjectTask,
 } from "../../actions/projectTaskActions";
 
-const UpdateProjectTask = ({
-  getProjectTask,
-  errors,
-  projectTask,
-  addProjectTask,
-}) => {
+const UpdateProjectTask = () => {
   const params = useParams();
   const history = useNavigate();
+  const dispatch = useDispatch();
+  const errors = useSelector((state) => state.errors);
+  const projectTask = useSelector((state) => state.projectTask.projectTask);
 
   const [state, setState] = React.useState({
     id: "",
@@ -27,8 +24,8 @@ const UpdateProjectTask = ({
   const [errorsObject, setErrorsObject] = React.useState({});
 
   React.useEffect(() => {
-    getProjectTask(params.project_task_id);
-  }, [getProjectTask, params.project_task_id]);
+    dispatch(getProjectTask(params.project_task_id));
+  }, [params.project_task_id, dispatch]);
 
   React.useEffect(() => {
     setErrorsObject(errors);
@@ -65,7 +62,7 @@ const UpdateProjectTask = ({
       status: state.status,
     };
 
-    addProjectTask(updatedTask, history);
+    dispatch(addProjectTask(updatedTask, history));
   };
 
   return (
@@ -129,17 +126,4 @@ const UpdateProjectTask = ({
   );
 };
 
-UpdateProjectTask.propTypes = {
-  projectTask: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  getProjectTask: PropTypes.func.isRequired,
-  addProjectTask: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return { projectTask: state.projectTask.projectTask, errors: state.errors };
-};
-
-export default connect(mapStateToProps, { getProjectTask, addProjectTask })(
-  UpdateProjectTask
-);
+export default UpdateProjectTask;

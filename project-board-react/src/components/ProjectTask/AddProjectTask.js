@@ -1,13 +1,14 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classnames from "classnames";
 
 import { addProjectTask } from "../../actions/projectTaskActions";
 
-const AddProjectTask = (props) => {
+const AddProjectTask = () => {
   const history = useNavigate();
+  const dispatch = useDispatch();
+  const errors = useSelector((state) => state.errors);
 
   const [state, setState] = React.useState({
     summary: "",
@@ -17,8 +18,8 @@ const AddProjectTask = (props) => {
   const [errorsObject, setErrorsObject] = React.useState({});
 
   React.useEffect(() => {
-    setErrorsObject(props.errors);
-  }, [props.errors]);
+    setErrorsObject(errors);
+  }, [errors]);
 
   const onChange = (e) => {
     setState((prevState) => ({
@@ -36,7 +37,7 @@ const AddProjectTask = (props) => {
       status: state.status,
     };
 
-    props.addProjectTask(newProjectTask, history);
+    dispatch(addProjectTask(newProjectTask, history));
   };
 
   return (
@@ -98,13 +99,4 @@ const AddProjectTask = (props) => {
   );
 };
 
-AddProjectTask.propTypes = {
-  addProjectTask: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return { errors: state.errors };
-};
-
-export default connect(mapStateToProps, { addProjectTask })(AddProjectTask);
+export default AddProjectTask;

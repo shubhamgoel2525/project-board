@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { deleteProjectTask } from "../../actions/projectTaskActions";
 
-const ProjectTaskItem = ({ projectTask, deleteProjectTask }) => {
+const ProjectTaskItem = ({ projectTask }) => {
+  const dispatch = useDispatch();
+
   const onDeleteClick = (projectTaskId) => {
-    deleteProjectTask(projectTaskId);
+    dispatch(deleteProjectTask(projectTaskId));
   };
 
   return (
@@ -39,8 +40,4 @@ const ProjectTaskItem = ({ projectTask, deleteProjectTask }) => {
   );
 };
 
-ProjectTaskItem.propTypes = {
-  deleteProjectTask: PropTypes.func.isRequired,
-};
-
-export default connect(null, { deleteProjectTask })(ProjectTaskItem);
+export default ProjectTaskItem;
