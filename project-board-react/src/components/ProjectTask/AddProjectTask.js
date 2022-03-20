@@ -1,24 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { addProjectTask } from "../../actions/projectTaskActions";
-import withRouter from "../../hoc/withRouter";
 
 const AddProjectTask = (props) => {
+  const history = useNavigate();
+
   const [state, setState] = React.useState({
     summary: "",
     acceptanceCriteria: "",
     status: "",
-    errors: {},
   });
+  const [errorsObject, setErrorsObject] = React.useState({});
 
   React.useEffect(() => {
-    setState((prevState) => {
-      return { ...prevState, errors: props.errors };
-    });
+    setErrorsObject(props.errors);
   }, [props.errors]);
 
   const onChange = (e) => {
@@ -37,7 +36,7 @@ const AddProjectTask = (props) => {
       status: state.status,
     };
 
-    props.addProjectTask(newProjectTask, props.history);
+    props.addProjectTask(newProjectTask, history);
   };
 
   return (
@@ -54,15 +53,15 @@ const AddProjectTask = (props) => {
                 <input
                   type="text"
                   className={classnames("form-control form-control-lg", {
-                    "is-invalid": state.errors.summary,
+                    "is-invalid": errorsObject.summary,
                   })}
                   name="summary"
                   value={state.summary}
                   placeholder="Project Task summary"
                   onChange={onChange}
                 />
-                {state.errors.summary && (
-                  <div className="invalid-feedback">{state.errors.summary}</div>
+                {errorsObject.summary && (
+                  <div className="invalid-feedback">{errorsObject.summary}</div>
                 )}
               </div>
 
@@ -108,6 +107,4 @@ const mapStateToProps = (state) => {
   return { errors: state.errors };
 };
 
-export default connect(mapStateToProps, { addProjectTask })(
-  withRouter(AddProjectTask)
-);
+export default connect(mapStateToProps, { addProjectTask })(AddProjectTask);

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
@@ -8,16 +8,16 @@ import {
   getProjectTask,
   addProjectTask,
 } from "../../actions/projectTaskActions";
-import withRouter from "../../hoc/withRouter";
 
 const UpdateProjectTask = ({
   getProjectTask,
-  params,
   errors,
   projectTask,
   addProjectTask,
-  history,
 }) => {
+  const params = useParams();
+  const history = useNavigate();
+
   const [state, setState] = React.useState({
     id: "",
     summary: "",
@@ -141,5 +141,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, { getProjectTask, addProjectTask })(
-  withRouter(UpdateProjectTask)
+  UpdateProjectTask
 );
