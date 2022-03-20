@@ -39,6 +39,8 @@ export const getProjectTask = (projectTaskId, history) => async (dispatch) => {
     );
 
     dispatch({ type: GET_PROJECT_TASK, payload: res.data });
+
+    dispatch({ type: GET_ERRORS, payload: {} });
   } catch (error) {
     history("/");
   }
