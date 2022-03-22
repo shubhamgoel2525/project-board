@@ -13,5 +13,5 @@ jobs:
         with:
           node-version: 16
       - name: Install dependencies
-        run: cd project-board-react && npm ci
-      - run: cd project-board-react && npm run build --if-present
+        run: cd project-board-react && yarn
+      - run: cd project-board-react && yarn build --if-present
