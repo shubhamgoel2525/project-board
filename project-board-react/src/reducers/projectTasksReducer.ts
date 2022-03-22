@@ -3,10 +3,15 @@ import {
   GET_PROJECT_TASK,
   GET_PROJECT_TASKS,
 } from "../actions/types";
+import { IProjectTask } from "../types/projectTask";
 
-const initialState = { projectTasks: [], projectTask: {} };
+const initialState: {
+  projectTask: IProjectTask | {};
+  projectTasks: IProjectTask[];
+} = { projectTasks: [], projectTask: {} };
 
-function projectTaskReducer(state = initialState, action) {
+// TODO: Fix any type
+function projectTaskReducer(state = initialState, action: any) {
   switch (action.type) {
     case GET_PROJECT_TASKS:
       return { ...state, projectTasks: action.payload };

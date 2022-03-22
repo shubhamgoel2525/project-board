@@ -4,20 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProjectTaskItem from "./ProjectTask/ProjectTaskItem";
 import { getBacklog } from "../actions/projectTaskActions";
+import { AppDispatch, RootState } from "../store";
+import { IProjectTask } from '../types/projectTask';
 
 const ProjectBoard = () => {
-  const dispatch = useDispatch();
-  const { projectTasks } = useSelector((state) => state.projectTask);
+  const dispatch = useDispatch<AppDispatch>();
+  const { projectTasks } = useSelector((state: RootState) => state.projectTask);
 
   React.useEffect(() => {
     dispatch(getBacklog());
   }, [dispatch]);
 
-  let todoItems = [];
-  let inProgressItems = [];
-  let doneItems = [];
+  let todoItems: JSX.Element[] = [];
+  let inProgressItems: JSX.Element[] = [];
+  let doneItems: JSX.Element[] = [];
 
-  const boardAlgorithm = (projectTasks) => {
+  const boardAlgorithm = (projectTasks: IProjectTask[]) => {
     if (projectTasks.length < 1) {
       return (
         <div className="alert alert-info text-center" role="alert">
@@ -25,7 +27,7 @@ const ProjectBoard = () => {
         </div>
       );
     } else {
-      const tasks = projectTasks.map((projectTask) => (
+      const tasks = projectTasks.map((projectTask: IProjectTask) => (
         <ProjectTaskItem key={projectTask.id} projectTask={projectTask} />
       ));
 

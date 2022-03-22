@@ -1,13 +1,18 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { deleteProjectTask } from "../../actions/projectTaskActions";
+import { IProjectTask } from '../../types/projectTask';
+import { AppDispatch } from "../../store";
 
-const ProjectTaskItem = ({ projectTask }) => {
-  const dispatch = useDispatch();
+interface IProjectTaskItem {
+  projectTask: IProjectTask;
+}
 
-  const onDeleteClick = (projectTaskId) => {
+const ProjectTaskItem = ({ projectTask }: IProjectTaskItem) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const onDeleteClick = (projectTaskId: string) => {
     dispatch(deleteProjectTask(projectTaskId));
   };
 

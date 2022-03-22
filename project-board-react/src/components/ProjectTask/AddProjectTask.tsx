@@ -1,68 +1,56 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import classnames from "classnames";
 
-import {
-  getProjectTask,
-  addProjectTask,
-} from "../../actions/projectTaskActions";
+import { addProjectTask } from "../../actions/projectTaskActions";
+import { AppDispatch, RootState } from "../../store";
 
-const UpdateProjectTask = () => {
-  const params = useParams();
+interface IState {
+  summary: string;
+  acceptanceCriteria: string;
+  status: "TO_DO" | "IN_PROGRESS" | "DONE" | "";
+}
+
+interface IErrorObject {
+  summary: string;
+}
+
+const AddProjectTask = () => {
   const history = useNavigate();
-  const dispatch = useDispatch();
-  const errors = useSelector((state) => state.errors);
-  const projectTask = useSelector((state) => state.projectTask.projectTask);
+  const dispatch = useDispatch<AppDispatch>();
+  const errors = useSelector((state: RootState) => state.errors);
 
-  const [state, setState] = React.useState({
-    id: "",
+  const [state, setState] = React.useState<IState>({
     summary: "",
     acceptanceCriteria: "",
     status: "",
   });
-  const [errorsObject, setErrorsObject] = React.useState({});
-
-  React.useEffect(() => {
-    dispatch(getProjectTask(params.project_task_id));
-  }, [params.project_task_id, dispatch]);
+  const [errorsObject, setErrorsObject] = React.useState<IErrorObject>({
+    summary: "",
+  });
 
   React.useEffect(() => {
     setErrorsObject(errors);
   }, [errors]);
 
-  React.useEffect(() => {
-    // Check if project task fields are not undefined
-    // TODO: Find a better solution
-    if (!projectTask.id) {
-      return;
-    }
-
-    const { id, summary, acceptanceCriteria, status } = projectTask;
-
-    setState({ id, summary, acceptanceCriteria, status });
-  }, [projectTask]);
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-
+  const onChange = (e: any) => {
     setState((prevState) => ({
       ...prevState,
-      [name]: value,
+      [e.target.name]: e.target.value,
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
 
-    const updatedTask = {
-      id: state.id,
+    const newProjectTask = {
       summary: state.summary,
       acceptanceCriteria: state.acceptanceCriteria,
       status: state.status,
     };
 
-    dispatch(addProjectTask(updatedTask, history));
+    dispatch(addProjectTask(newProjectTask, history));
   };
 
   return (
@@ -73,19 +61,17 @@ const UpdateProjectTask = () => {
             <Link to="/" className="btn btn-light">
               Back to Board
             </Link>
-
             <h4 className="display-4 text-center">Add /Update Project Task</h4>
-
             <form onSubmit={onSubmit}>
               <div className="form-group">
                 <input
                   type="text"
                   className={classnames("form-control form-control-lg", {
-                    "is-valid": errorsObject.summary,
+                    "is-invalid": errorsObject.summary,
                   })}
                   name="summary"
-                  placeholder="Project Task summary"
                   value={state.summary}
+                  placeholder="Project Task summary"
                   onChange={onChange}
                 />
                 {errorsObject.summary && (
@@ -107,8 +93,8 @@ const UpdateProjectTask = () => {
                 <select
                   className="form-control form-control-lg"
                   name="status"
-                  value={state.status}
                   onChange={onChange}
+                  value={state.status}
                 >
                   <option value="">Select Status</option>
                   <option value="TO_DO">TO DO</option>
@@ -126,4 +112,4 @@ const UpdateProjectTask = () => {
   );
 };
 
-export default UpdateProjectTask;
+export default AddProjectTask;
