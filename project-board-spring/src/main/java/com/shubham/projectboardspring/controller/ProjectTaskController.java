@@ -30,7 +30,7 @@ public class ProjectTaskController {
         if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
 
-            for (FieldError error: result.getFieldErrors()) {
+            for (FieldError error : result.getFieldErrors()) {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
 
@@ -60,6 +60,10 @@ public class ProjectTaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProjectTaskById(@PathVariable Long id) {
+
+        if (projectTaskService.findById(id) == null) {
+            return new ResponseEntity<>("Project task not found", HttpStatus.NOT_FOUND);
+        }
 
         projectTaskService.deleteById(id);
 
