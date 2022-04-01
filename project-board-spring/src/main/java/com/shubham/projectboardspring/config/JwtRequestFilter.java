@@ -45,7 +45,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			} catch (IllegalArgumentException e) {
 				System.out.println("Unable to get JWT token");
 			} catch (ExpiredJwtException e) {
-				System.out.println("JWT token has expired");
+				String isRefreshToken = request.getHeader("isRefreshToken");
+				String requestUrl = request.getRequestURL().toString();
+
+				if (isRefreshToken != null && isRefreshToken.equals("true") && requestUrl.contains("refreshToken")) {
+					allowForRefreshToken(e, request);
+				} else {
+					request.setAttribute("exception", request);
+				}
 			}
 		} else {
 			logger.warn("JWT token does not begin with Bearer String");
@@ -65,6 +72,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}
 
 		filterChain.doFilter(request, response);
+	}
+
+	private void allowForRefreshToken(ExpiredJwtException e, HttpServletRequest request) {
+
+		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+				null, null, null);
+
+		// After setting the Authentication in the context, we specify
+		// that the current user is authenticated. So it passes the
+		// Spring Security Configurations successfully.
+		SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+		request.setAttribute("claims", e.getClaims());
 	}
 
 }
