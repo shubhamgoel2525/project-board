@@ -1,4 +1,4 @@
-package com.shubham.projectboardspring.domain;
+package com.shubham.projectboardspring.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "user")
 @Getter
 @Setter
-public class DAOUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

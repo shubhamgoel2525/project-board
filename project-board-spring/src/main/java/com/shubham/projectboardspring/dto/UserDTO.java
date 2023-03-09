@@ -1,4 +1,4 @@
-package com.shubham.projectboardspring.domain;
+package com.shubham.projectboardspring.dto;
 
 import lombok.Getter;
 import lombok.Setter;

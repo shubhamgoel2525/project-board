@@ -1,4 +1,4 @@
-package com.shubham.projectboardspring.domain;
+package com.shubham.projectboardspring.dto;
 
 import java.io.Serializable;
 
