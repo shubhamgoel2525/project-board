@@ -1,7 +1,7 @@
 package com.shubham.projectboardspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shubham.projectboardspring.domain.ProjectTask;
+import com.shubham.projectboardspring.models.ProjectTask;
 import com.shubham.projectboardspring.repository.ProjectTaskRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

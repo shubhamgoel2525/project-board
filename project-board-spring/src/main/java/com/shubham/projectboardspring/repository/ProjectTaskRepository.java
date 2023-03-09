@@ -1,6 +1,6 @@
 package com.shubham.projectboardspring.repository;
 
-import com.shubham.projectboardspring.domain.ProjectTask;
+import com.shubham.projectboardspring.models.ProjectTask;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
