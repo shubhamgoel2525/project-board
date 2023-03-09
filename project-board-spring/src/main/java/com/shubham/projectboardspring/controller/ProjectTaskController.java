@@ -1,6 +1,6 @@
 package com.shubham.projectboardspring.controller;
 
-import com.shubham.projectboardspring.domain.ProjectTask;
+import com.shubham.projectboardspring.models.ProjectTask;
 import com.shubham.projectboardspring.service.ProjectTaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +61,7 @@ public class ProjectTaskController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProjectTaskById(@PathVariable Long id) {
 
-        if (projectTaskService.findById(id) == null) {
+        if (projectTaskService.findById(id).isEmpty()) {
             return new ResponseEntity<>("Project task not found", HttpStatus.NOT_FOUND);
         }
 

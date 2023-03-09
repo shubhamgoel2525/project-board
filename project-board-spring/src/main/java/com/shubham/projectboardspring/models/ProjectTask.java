@@ -1,4 +1,4 @@
-package com.shubham.projectboardspring.domain;
+package com.shubham.projectboardspring.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

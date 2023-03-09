@@ -20,9 +20,10 @@ const isChromeOrFirefox =
 const store = createStore(
   rootReducer,
   initialState,
-  isChromeOrFirefox
-    ? compose(applyMiddleware(...middleware), REDUX_DEV_TOOLS)
-    : compose(applyMiddleware(...middleware))
+  compose(applyMiddleware(...middleware))
+  // isChromeOrFirefox
+  //   ? compose(applyMiddleware(...middleware), REDUX_DEV_TOOLS)
+    // : compose(applyMiddleware(...middleware))
 );
 
 export type RootState = ReturnType<typeof store.getState>;
