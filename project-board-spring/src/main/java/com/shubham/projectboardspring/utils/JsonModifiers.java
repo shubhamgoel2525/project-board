@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Component
 public class JsonModifiers {
-    public Map<String, Object> getMapFromIoJsonwebtokenClaims(Claims claims) {
+    public Map<String, Object> getMapFromIoJsonWebTokenClaims(Claims claims) {
 
         return new HashMap<>(claims);
     }

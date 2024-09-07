@@ -8,29 +8,28 @@ import com.shubham.projectboardspring.service.JwtUserDetailsService;
 import com.shubham.projectboardspring.utils.AuthenticationUtils;
 import com.shubham.projectboardspring.utils.JsonModifiers;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtUserDetailsService userDetailsService;
+    private final JsonModifiers jsonModifiers;
+    private final AuthenticationUtils authenticationUtils;
 
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
-
-    @Autowired
-    private JsonModifiers jsonModifiers;
-
-    @Autowired
-    private AuthenticationUtils authenticationUtils;
+    public JwtAuthenticationController(JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService, JsonModifiers jsonModifiers, AuthenticationUtils authenticationUtils) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+        this.jsonModifiers = jsonModifiers;
+        this.authenticationUtils = authenticationUtils;
+    }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -56,7 +55,7 @@ public class JwtAuthenticationController {
         // Get claims from the HTTP request
         Claims claims = (Claims) request.getAttribute("claims");
 
-        Map<String, Object> expectedMap = jsonModifiers.getMapFromIoJsonwebtokenClaims(claims);
+        Map<String, Object> expectedMap = jsonModifiers.getMapFromIoJsonWebTokenClaims(claims);
         String token = jwtTokenUtil.doGenerateRefreshToken(expectedMap, expectedMap.get("sub").toString());
 
         return ResponseEntity.ok(new JwtResponse(token));
