@@ -4,6 +4,7 @@ import com.shubham.projectboardspring.config.JwtTokenUtil;
 import com.shubham.projectboardspring.dto.JwtRequest;
 import com.shubham.projectboardspring.dto.JwtResponse;
 import com.shubham.projectboardspring.dto.UserDTO;
+import com.shubham.projectboardspring.models.User;
 import com.shubham.projectboardspring.service.JwtUserDetailsService;
 import com.shubham.projectboardspring.utils.AuthenticationUtils;
 import com.shubham.projectboardspring.utils.JsonModifiers;
@@ -31,8 +32,8 @@ public class JwtAuthenticationController {
         this.authenticationUtils = authenticationUtils;
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticationUtils.authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -43,14 +44,14 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) {
+    @PostMapping(value = "/register")
+    public ResponseEntity<User> saveUser(@RequestBody UserDTO user) {
 
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 
-    @RequestMapping(value = "/refreshToken", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+    @GetMapping(value = "/refreshToken")
+    public ResponseEntity<JwtResponse> refreshToken(HttpServletRequest request) {
 
         // Get claims from the HTTP request
         Claims claims = (Claims) request.getAttribute("claims");

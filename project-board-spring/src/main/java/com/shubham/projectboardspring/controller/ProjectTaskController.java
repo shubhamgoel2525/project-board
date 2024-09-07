@@ -24,6 +24,7 @@ public class ProjectTaskController {
         this.projectTaskService = projectTaskService;
     }
 
+    // TODO: remove wildcard
     @PostMapping("")
     public ResponseEntity<?> addProjectTaskToBoard(@Valid @RequestBody ProjectTask projectTask, BindingResult result) {
 
@@ -43,7 +44,7 @@ public class ProjectTaskController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllProjectTasks() {
+    public ResponseEntity<Iterable<ProjectTask>> getAllProjectTasks() {
 
         Iterable<ProjectTask> itr = projectTaskService.findAll();
 
@@ -51,7 +52,7 @@ public class ProjectTaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProjectTaskById(@PathVariable Long id) {
+    public ResponseEntity<Optional<ProjectTask>> getProjectTaskById(@PathVariable Long id) {
 
         Optional<ProjectTask> projectTask = projectTaskService.findById(id);
 
@@ -59,7 +60,7 @@ public class ProjectTaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProjectTaskById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProjectTaskById(@PathVariable Long id) {
 
         if (projectTaskService.findById(id).isEmpty()) {
             return new ResponseEntity<>("Project task not found", HttpStatus.NOT_FOUND);

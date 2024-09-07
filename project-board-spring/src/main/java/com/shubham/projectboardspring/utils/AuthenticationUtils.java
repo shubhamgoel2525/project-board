@@ -1,6 +1,5 @@
 package com.shubham.projectboardspring.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -9,9 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationUtils {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
+    public AuthenticationUtils(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    // TODO: Make dedicated exceptions
     public void authenticate(String username, String password) throws Exception {
 
         try {

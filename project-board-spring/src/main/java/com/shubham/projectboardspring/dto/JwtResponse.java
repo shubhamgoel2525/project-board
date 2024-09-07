@@ -2,12 +2,6 @@ package com.shubham.projectboardspring.dto;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+public record JwtResponse(String jwtToken) implements Serializable {
 
-@AllArgsConstructor
-@Getter
-public class JwtResponse implements Serializable {
-
-	private final String jwtToken;
 }
