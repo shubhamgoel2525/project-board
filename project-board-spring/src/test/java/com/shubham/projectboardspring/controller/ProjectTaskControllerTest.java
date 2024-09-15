@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProjectTaskControllerTest {
+class ProjectTaskControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -34,12 +34,12 @@ public class ProjectTaskControllerTest {
     @MockBean
     ProjectTaskRepository projectTaskRepository;
 
-    ProjectTask PROJECT_TASK_1 = new ProjectTask(1L, "Sample1", "Sample1", "IN_PROGRESS");
-    ProjectTask PROJECT_TASK_2 = new ProjectTask(2L, "Sample2", "Sample2", "DONE");
-    ProjectTask PROJECT_TASK_3 = new ProjectTask(3L, "Sample3", "Sample3", "TODO");
+    static final ProjectTask PROJECT_TASK_1 = new ProjectTask(1L, "Sample1", "Sample1", "IN_PROGRESS");
+    static final ProjectTask PROJECT_TASK_2 = new ProjectTask(2L, "Sample2", "Sample2", "DONE");
+    static final ProjectTask PROJECT_TASK_3 = new ProjectTask(3L, "Sample3", "Sample3", "TODO");
 
     @Test
-    public void getAllProjectTasksTest() throws Exception {
+    void getAllProjectTasksTest() throws Exception {
         List<ProjectTask> records = new ArrayList<>(
                 Arrays.asList(PROJECT_TASK_1, PROJECT_TASK_2, PROJECT_TASK_3));
 

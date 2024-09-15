@@ -26,7 +26,11 @@ public class WebSecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final PasswordEncoderConfig passwordEncoderConfig;
 
-    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserDetailsService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter, PasswordEncoderConfig passwordEncoderConfig) {
+    public WebSecurityConfig(
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            UserDetailsService jwtUserDetailsService,
+            JwtRequestFilter jwtRequestFilter,
+            PasswordEncoderConfig passwordEncoderConfig) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
@@ -51,10 +55,15 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests.requestMatchers("/authenticate", "/register", "/refreshToken").permitAll())
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeHttpRequests ->
+                        authorizeHttpRequests.requestMatchers(
+                                "/authenticate", "/register", "/refreshToken").permitAll())
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests.anyRequest().authenticated())
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
