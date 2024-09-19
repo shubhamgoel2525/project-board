@@ -31,24 +31,23 @@ const ProjectBoard = () => {
         <ProjectTaskItem key={projectTask.id} projectTask={projectTask} />
       ));
 
-      for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].props.projectTask.status === "TO_DO") {
-          todoItems.push(tasks[i]);
+      for (const element of tasks) {
+        if (element.props.projectTask.status === "TO_DO") {
+          todoItems.push(element);
         }
 
-        if (tasks[i].props.projectTask.status === "IN_PROGRESS") {
-          inProgressItems.push(tasks[i]);
+        if (element.props.projectTask.status === "IN_PROGRESS") {
+          inProgressItems.push(element);
         }
 
-        if (tasks[i].props.projectTask.status === "DONE") {
-          doneItems.push(tasks[i]);
+        if (element.props.projectTask.status === "DONE") {
+          doneItems.push(element);
         }
       }
     }
 
     return (
-      <React.Fragment>
-        <div className="container">
+      <div className="container">
           <div className="row">
             <div className="col-md-4">
               <div className="card text-center mb-2">
@@ -80,7 +79,6 @@ const ProjectBoard = () => {
             {doneItems}
           </div>
         </div>
-      </React.Fragment>
     );
   };
 
