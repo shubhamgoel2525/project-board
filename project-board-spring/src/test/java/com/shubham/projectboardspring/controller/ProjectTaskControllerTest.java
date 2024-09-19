@@ -1,7 +1,7 @@
 package com.shubham.projectboardspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shubham.projectboardspring.domain.ProjectTask;
+import com.shubham.projectboardspring.models.ProjectTask;
 import com.shubham.projectboardspring.repository.ProjectTaskRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProjectTaskControllerTest {
+class ProjectTaskControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -34,34 +35,36 @@ public class ProjectTaskControllerTest {
     @MockBean
     ProjectTaskRepository projectTaskRepository;
 
-    ProjectTask PROJECT_TASK_1 = new ProjectTask(1L, "Sample1", "Sample1", "IN_PROGRESS");
-    ProjectTask PROJECT_TASK_2 = new ProjectTask(2L, "Sample2", "Sample2", "DONE");
-    ProjectTask PROJECT_TASK_3 = new ProjectTask(3L, "Sample3", "Sample3", "TODO");
+    static final ProjectTask PROJECT_TASK_1 = new ProjectTask(1L, "Sample1", "Sample1", "IN_PROGRESS");
+    static final ProjectTask PROJECT_TASK_2 = new ProjectTask(2L, "Sample2", "Sample2", "DONE");
+    static final ProjectTask PROJECT_TASK_3 = new ProjectTask(3L, "Sample3", "Sample3", "TODO");
 
     @Test
-    public void getAllProjectTasksTest() throws Exception {
-        List<ProjectTask> records = new ArrayList<>(
+    void getAllProjectTasksTest() throws Exception {
+        List<ProjectTask> projectTaskRecords = new ArrayList<>(
                 Arrays.asList(PROJECT_TASK_1, PROJECT_TASK_2, PROJECT_TASK_3));
 
-        Mockito.when(projectTaskRepository.findAll()).thenReturn(records);
+        Mockito.when(projectTaskRepository.findAll()).thenReturn(projectTaskRecords);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/v1/board/all")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .get("/api/v1/board/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(3)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[2].summary", Matchers.is("Sample3")));
     }
 
     @Test
-    public void getProjectTaskByIdTest() throws Exception {
+    void getProjectTaskByIdTest() throws Exception {
         Mockito.when(projectTaskRepository.findById(PROJECT_TASK_1.getId()))
                 .thenReturn(Optional.of(PROJECT_TASK_1));
 
         mockMvc.perform(
-                MockMvcRequestBuilders
-                        .get("/api/v1/board/" + PROJECT_TASK_1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders
+                                .get("/api/v1/board/" + PROJECT_TASK_1.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.summary",
@@ -69,20 +72,21 @@ public class ProjectTaskControllerTest {
     }
 
     @Test
-    public void createProjectTaskTest() throws Exception {
-        ProjectTask record = ProjectTask.builder()
+    void createProjectTaskTest() throws Exception {
+        ProjectTask projectTaskRecords = ProjectTask.builder()
                 .summary("Sample")
                 .acceptanceCriteria("Sample")
                 .status("TODO")
                 .build();
 
-        Mockito.when(projectTaskRepository.save(record)).thenReturn(record);
+        Mockito.when(projectTaskRepository.save(projectTaskRecords)).thenReturn(projectTaskRecords);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/api/v1/board")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(record));
+                .content(this.mapper.writeValueAsString(projectTaskRecords))
+                .with(SecurityMockMvcRequestPostProcessors.jwt());
 
         mockMvc.perform(mockRequest)
                 .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -91,19 +95,20 @@ public class ProjectTaskControllerTest {
     }
 
     @Test
-    public void createProjectTaskBadRequestTest() throws Exception {
-        ProjectTask record = ProjectTask.builder()
+    void createProjectTaskBadRequestTest() throws Exception {
+        ProjectTask projectTaskRecords = ProjectTask.builder()
                 .acceptanceCriteria("Sample")
                 .status("TODO")
                 .build();
 
-        Mockito.when(projectTaskRepository.save(record)).thenReturn(record);
+        Mockito.when(projectTaskRepository.save(projectTaskRecords)).thenReturn(projectTaskRecords);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/api/v1/board")
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.jwt())
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(record));
+                .content(this.mapper.writeValueAsString(projectTaskRecords));
 
         mockMvc.perform(mockRequest)
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -134,7 +139,7 @@ public class ProjectTaskControllerTest {
 */
 
     @Test
-    public void updateProjectTaskTest() throws Exception {
+    void updateProjectTaskTest() throws Exception {
         ProjectTask updatedProjectTask = ProjectTask.builder()
                 .id(1L)
                 .summary("Sample")
@@ -148,7 +153,8 @@ public class ProjectTaskControllerTest {
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/v1/board")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(updatedProjectTask));
+                .content(this.mapper.writeValueAsString(updatedProjectTask))
+                .with(SecurityMockMvcRequestPostProcessors.jwt());
 
         mockMvc.perform(mockRequest)
                 .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -157,24 +163,26 @@ public class ProjectTaskControllerTest {
     }
 
     @Test
-    public void deleteProjectTaskByIdTest() throws Exception {
+    void deleteProjectTaskByIdTest() throws Exception {
         Mockito.when(projectTaskRepository.findById(PROJECT_TASK_1.getId())).thenReturn(Optional.of(PROJECT_TASK_1));
 
         mockMvc.perform(
-                MockMvcRequestBuilders
-                        .delete("/api/v1/board/" + PROJECT_TASK_1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders
+                                .delete("/api/v1/board/" + PROJECT_TASK_1.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    public void deleteProjectTaskByIdNotFoundTest() throws Exception {
-        Mockito.when(projectTaskRepository.findById(PROJECT_TASK_1.getId())).thenReturn(null);
+    void deleteProjectTaskByIdNotFoundTest() throws Exception {
+        Mockito.when(projectTaskRepository.findById(PROJECT_TASK_1.getId())).thenReturn(Optional.empty());
 
         mockMvc.perform(
-                MockMvcRequestBuilders
-                        .delete("/api/v1/board/" + PROJECT_TASK_1.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders
+                                .delete("/api/v1/board/" + PROJECT_TASK_1.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(SecurityMockMvcRequestPostProcessors.jwt()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

@@ -1,6 +1,6 @@
 package com.shubham.projectboardspring.service;
 
-import com.shubham.projectboardspring.domain.ProjectTask;
+import com.shubham.projectboardspring.models.ProjectTask;
 import com.shubham.projectboardspring.repository.ProjectTaskRepository;
 import org.springframework.stereotype.Service;
 
